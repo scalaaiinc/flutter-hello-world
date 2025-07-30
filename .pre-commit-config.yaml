@@ -1,0 +1,40 @@
+# Run `pre-commit install` to set up the git hook scripts
+# Run `pre-commit run --all-files` to run the hooks against all of the files when adding new hooks
+#   (usually pre-commit will only run on the changed files during git hooks)
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+default_language_version:
+  python: python3.11
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: check-added-large-files
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: black
+        language: python
+        minimum_pre_commit_version: 2.9.2
+        require_serial: true
+        types_or: [python, pyi]
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+  - repo: local
+    hooks:
+      - id: isort
+        name: isort
+        entry: isort
+        stages: [commit, merge-commit, push, manual]
+        require_serial: true
+        language: python
+        types_or: [cython, pyi, python]
+        args: ['--filter-files']
+        minimum_pre_commit_version: '2.9.2'

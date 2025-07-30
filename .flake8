@@ -1,0 +1,12 @@
+[flake8]
+# See https://www.flake8rules.com/ for all rules
+max-complexity = 10
+exclude =
+    .build,
+extend-ignore =
+    # See https://github.com/PyCQA/pycodestyle/issues/373
+    E203,
+    # Max line length is Black's responsibility and is not always guaranteed
+    # See https://github.com/psf/black/issues/1331
+    E501,
+    C901,
