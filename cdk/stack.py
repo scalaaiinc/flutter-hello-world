@@ -58,10 +58,11 @@ class FlutterHelloWorld(cdk.Stack):
         )
 
         domain = self._env["domain"]
+        sub_domain_name = self._env["subDomainName"]
         hosted_zone = route53.HostedZone.from_lookup(
             self,
             "HostedZone",
-            domain_name='.'.join(domain.split(".")[1:]),
+            domain_name=domain,
         )
 
         fargate_service_helper = FargateServiceHelper(
@@ -69,6 +70,6 @@ class FlutterHelloWorld(cdk.Stack):
             self._stack_name,
             task_environmental_variables,
             fargate_parameters,
-            domain=domain,
+            domain=f'{sub_domain_name}.{domain}',
             domain_zone=hosted_zone,
         ) 
