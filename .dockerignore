@@ -52,4 +52,7 @@ coverage.xml
 .git
 .mypy_cache
 .pytest_cache
-.hypothesis 
+.hypothesis
+CODE_ARTIFACT_REPO_URL
+cdk.context.json
+cdk.out
