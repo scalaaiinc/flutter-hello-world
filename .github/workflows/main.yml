@@ -1,0 +1,19 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+  release:
+    types: [created]
+
+jobs:
+  build-test-deploy:
+    uses: scalaaiinc/workflow-templates/.github/workflows/flutter-aws-cdk.yml@main
+    secrets: inherit
