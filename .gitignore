@@ -44,3 +44,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+CODE_ARTIFACT_REPO_URL
+cdk.context.json
+cdk.out

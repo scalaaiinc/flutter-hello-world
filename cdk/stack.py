@@ -2,6 +2,7 @@ import os
 
 import aws_cdk as cdk
 import aws_cdk.aws_ecs as ecs
+import aws_cdk.aws_route53 as route53
 from aws_cdk.aws_ecr_assets import DockerImageAsset, NetworkMode, Platform
 from aws_cdk.aws_logs import RetentionDays
 from constructs import Construct
@@ -12,7 +13,7 @@ from cdk.env import get_env
 
 
 class FlutterHelloWorld(cdk.Stack):
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, stack_env: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
         self._region = os.environ.get("CDK_DEPLOY_REGION", os.environ["CDK_DEFAULT_REGION"])
         self._account_id = os.environ["CDK_DEFAULT_ACCOUNT"]
@@ -20,7 +21,6 @@ class FlutterHelloWorld(cdk.Stack):
         self._owner_team = "scala"
         
         # Get environment from context
-        stack_env = self.node.try_get_context("environment_name") or "playground"
         self._env = get_env()[stack_env]
         self._stack_env = stack_env
 
@@ -58,6 +58,11 @@ class FlutterHelloWorld(cdk.Stack):
         )
 
         domain = self._env["domain"]
+        hosted_zone = route53.HostedZone.from_lookup(
+            self,
+            "HostedZone",
+            domain_name='.'.join(domain.split(".")[1:]),
+        )
 
         fargate_service_helper = FargateServiceHelper(
             self,
@@ -65,4 +70,5 @@ class FlutterHelloWorld(cdk.Stack):
             task_environmental_variables,
             fargate_parameters,
             domain=domain,
+            domain_zone=hosted_zone,
         ) 
